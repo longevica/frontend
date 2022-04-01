@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { WindowWidth } from '../../../core/utils/window-width';
@@ -37,7 +37,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       autorange: true,
       ticks: 'outside',
       zeroline: false,
-      linewidth: 2
+      linewidth: 2,
     },
   };
   public windowSizeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -50,7 +50,6 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
     private filterParametersService: FilterParametersService,
     private experimentApiService: ExperimentApiService,
     private plotDataService: PlotDataService,
-    private readonly cdRef: ChangeDetectorRef,
   ) {
     super(windowWidthService);
   }
@@ -75,7 +74,8 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   }
 
   // TODO: WIP
-  public retrieveAndSetParams(next?: Function) {
+  // tslint:disable-next-line:ban-types
+  public retrieveAndSetParams(next?: Function): void {
     this.filterParametersService.getFiltersState()
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -93,7 +93,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       }
 
       this.filterParams = params;
-        console.log('params: ', this.filterParams);
+      console.log('params: ', this.filterParams);
     });
 
     if (next) {
