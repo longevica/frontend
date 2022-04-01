@@ -34,37 +34,33 @@ $color-gray-300: #ddd;
 $color-gray-200: #F0F0F0;
 $color-gray-100: #FAFAFA;
 $color-white: #fff;
-$color-orange-900: #C88142;
-$color-orange-500: #FFB334;
-$color-orange-200: #FFC769;
-$color-orange-100: #FFEDCF;
-$color-blue-50: #f2f7fd;
-$color-blue-100: #dce9fa;
-$color-blue-200: #9eb9f4;
-$color-blue-300: #7a92f1;
-$color-blue-400: #4c79ee;
-$color-blue-500: #366EE5;
-$color-blue-600: #3062ce;
-$color-blue-700: #2957b8;
-$color-blue-800: #244ca2;
-$color-blue-900: #1e428e;
+$color-primary-50: #fceefb;
+$color-primary-100: #f6cdf4;
+$color-primary-200: #f0aded;
+$color-primary-300: #ea8ce6;
+$color-primary-400: #e46bdf;
+$color-primary-500: #d026c9;
+$color-primary-600: #af20a9;
+$color-primary-700: #9e1d99;
+$color-primary-800: #872083;
+$color-primary-900: #000;
 
 // Material
-$palette-blue: (
-        50: $color-blue-50,
-        100: $color-blue-100,
-        200: $color-blue-200,
-        300: $color-blue-300,
-        400: $color-blue-400,
-        500: $color-blue-500,
-        600: $color-blue-600,
-        700: $color-blue-700,
-        800: $color-blue-800,
-        900: $color-blue-900,
-        A100: #82b1ff,
-        A200: #448aff,
-        A400: #2979ff,
-        A700: #2962ff,
+$custom-palette: (
+        50: $color-primary-50,
+        100: $color-primary-100,
+        200: $color-primary-200,
+        300: $color-primary-300,
+        400: $color-primary-400,
+        500: $color-primary-500,
+        600: $color-primary-600,
+        700: $color-primary-700,
+        800: $color-primary-800,
+        900: $color-primary-900,
+        A100: $color-primary-600,
+        A200: $color-primary-700,
+        A400: $color-primary-800,
+        A700: $color-primary-900,
         contrast: (
                 50: $color-black,
                 100: $color-black,
@@ -84,7 +80,7 @@ $palette-blue: (
 );
 
 // By function
-$color-general: $color-blue-300;
+$color-general: $color-primary-700;
 $color-borders: $color-gray-600;
 
 // Paths

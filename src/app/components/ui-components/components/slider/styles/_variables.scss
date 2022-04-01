@@ -1,9 +1,11 @@
+@import '../../../../../../assets/styles/dependencies';
+
 // Colors
-$slider-line-color: #c0c0c0; // TODO: сразу еще до пуша заменить на цвета в проекте
-$slider-line-bar-color: #2962ff;
-$slider-button-color: #2962ff;
-$slider-button-hover-color: #2962ff;
-$slider-button-pressed-color: #2962ff;
+$slider-line-color: $color-gray-600;
+$slider-line-bar-color: $color-primary-600;
+$slider-button-color: $color-primary-600;
+$slider-button-hover-color: $color-primary-600;
+$slider-button-pressed-color: $color-primary-600;
 
 // Sizes
 $slider-line-height: 2px;
