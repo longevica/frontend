@@ -20,13 +20,13 @@
     <div>{{drug.intervention.drugIntervention?.dosage || '\t&#8212;'}}</div>
   </td>
   <td class="table-cell table-cell--medium table-cell--center">
-    <div>{{drug.lifespan.med || '\t&#8212;'}}</div>
+    <div>{{drug.lifespan.med | number: '1.0-0' || '\t&#8212;'}}</div>
   </td>
   <td class="table-cell table-cell--maximum table-cell--center">
-    <div>{{drug.lifespan.max || '\t&#8212;'}}</div>
+    <div>{{drug.lifespan.max | number: '1.0-0' || '\t&#8212;'}}</div>
   </td>
   <td class="table-cell table-cell--average table-cell--center">
-    <div>{{drug.lifespan.avg || '\t&#8212;'}}</div>
+    <div>{{drug.lifespan.avg | number: '1.0-0' || '\t&#8212;'}}</div>
     <div class="minus"></div>
   </td>
   <td class="table-cell table-cell--row-data">

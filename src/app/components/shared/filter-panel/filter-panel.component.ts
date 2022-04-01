@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { FilterTypes } from '../../../core/models/filter-params.model';
@@ -7,13 +7,13 @@ import { Subject } from 'rxjs';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
 import { takeUntil } from 'rxjs/operators';
 
-type RangeValue = {[key:string]: number};
+type RangeValue = {[key: string]: number};
 @Component({
   selector: 'app-filter-panel',
   templateUrl: './filter-panel.component.html',
   styleUrls: ['./filter-panel.component.scss']
 })
-export class FilterPanelComponent {
+export class FilterPanelComponent implements OnInit, OnDestroy {
   public filtersForm: FormGroup;
   // FILTERS
   // Selects
@@ -29,21 +29,21 @@ export class FilterPanelComponent {
   // Sliders
   public slidersStep = 5;
   // - Avg lifespan change %
-  public avgLifespanChangePercent: RangeValue = {
+  public avgLifespan: RangeValue = {
     min: 0,
     max: 0,
     currentMin: 0,
     currentMax: 0,
   };
   // - Max lifespan change %
-  public maxLifespanChangePercent: RangeValue = {
+  public maxLifespan: RangeValue = {
     min: 0,
     max: 0,
     currentMin: 0,
     currentMax: 0,
   };
 
-  private subscription$ = new Subject;
+  private subscription$ = new Subject();
 
   @Input() filters: Filters;
   @Output() filterApplied: EventEmitter<{name: string, value: any}> = new EventEmitter<{name: string, value: any}>();
@@ -56,10 +56,10 @@ export class FilterPanelComponent {
       interventionTypeSelect: new FormControl(['', Validators.minLength(1)]),
       interventionsSelect: new FormControl([[], null]),
       speciesSelect: new FormControl(['', null]),
-      avgLifespanChangePercentMinInput: new FormControl(0, null),
-      avgLifespanChangePercentMaxInput: new FormControl(0, null),
-      maxLifespanChangePercentMinInput: new FormControl(0, null),
-      maxLifespanChangePercentMaxInput: new FormControl(0, null),
+      avgLifespanMinInput: new FormControl(0, null),
+      avgLifespanMaxInput: new FormControl(0, null),
+      maxLifespanMinInput: new FormControl(0, null),
+      maxLifespanMaxInput: new FormControl(0, null),
     });
   }
 
@@ -86,16 +86,16 @@ export class FilterPanelComponent {
       });
 
     // Avg lifespan change % (range slider)
-    this.avgLifespanChangePercent.min = this.getEntitiesList('avgLifespanChangePercent').min;
-    this.avgLifespanChangePercent.max = this.getEntitiesList('avgLifespanChangePercent').max;
-    this.avgLifespanChangePercent.currentMin = this.avgLifespanChangePercent.min;
-    this.avgLifespanChangePercent.currentMax = this.avgLifespanChangePercent.max;
+    this.avgLifespan.min = this.getEntitiesList('avgLifespan').min;
+    this.avgLifespan.max = this.getEntitiesList('avgLifespan').max;
+    this.avgLifespan.currentMin = this.avgLifespan.min;
+    this.avgLifespan.currentMax = this.avgLifespan.max;
 
     // Max lifespan change % (range slider)
-    this.maxLifespanChangePercent.min = this.getEntitiesList('maxLifespanChangePercent').min;
-    this.maxLifespanChangePercent.max = this.getEntitiesList('maxLifespanChangePercent').max;
-    this.maxLifespanChangePercent.currentMin = this.maxLifespanChangePercent.min;
-    this.maxLifespanChangePercent.currentMax = this.maxLifespanChangePercent.max;
+    this.maxLifespan.min = this.getEntitiesList('maxLifespan').min;
+    this.maxLifespan.max = this.getEntitiesList('maxLifespan').max;
+    this.maxLifespan.currentMin = this.maxLifespan.min;
+    this.maxLifespan.currentMax = this.maxLifespan.max;
   }
 
   ngOnDestroy(): void {
@@ -133,7 +133,8 @@ export class FilterPanelComponent {
    * Apply filter values
    */
 
-  apply(key: FilterTypes, $event: MatSelectChange, callback?: Function) {
+  // tslint:disable-next-line:ban-types
+  apply(key: FilterTypes, $event: MatSelectChange, callback?: Function): void {
     let value = $event.value;
     if (Array.isArray($event.value)) {
       value = $event.value[0];
@@ -146,7 +147,7 @@ export class FilterPanelComponent {
     }
   }
 
-  applyRange(key: FilterTypes, field: any, rangePoint: 'min' | 'max', $event: number) {
+  applyRange(key: FilterTypes, field: any, rangePoint: 'min' | 'max', $event: number): void {
     switch (rangePoint) {
       case 'min':
         field.currentMin = Math.floor($event);
@@ -160,10 +161,10 @@ export class FilterPanelComponent {
     this.filterApplied.emit({ name: key, value: value });
   }
 
-  public pickInterventions() {
+  public pickInterventions(): void {
     // Cancel interventions' selected option before
     this.selectedInterventions = [];
-    this.filterApplied.emit({name: 'interventions', value: []})
+    this.filterApplied.emit({name: 'interventions', value: []});
     // Show a list of interventions filtered by a 'type' field
     const interventions = this.getEntitiesList('intervention');
     this.interventions = interventions.filter((intervention: Intervention) => intervention?.type == this.selectedInterventionType);

@@ -42,31 +42,33 @@
     <label>Average lifespan change (%)</label>
     <div class="slider__range-wrapper">
       <app-slider
-        [minValue]="avgLifespanChangePercent.min"
-        [maxValue]="avgLifespanChangePercent.max"
+        [minValue]="avgLifespan.min"
+        [maxValue]="avgLifespan.max"
         [sliderStep]="slidersStep"
-        [minCurrentValue]="avgLifespanChangePercent.currentMin"
-        [maxCurrentValue]="avgLifespanChangePercent.currentMax"
-        (minCurrentValueChange)="applyRange('avgLifespanChangePercent', avgLifespanChangePercent, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('avgLifespanChangePercent', avgLifespanChangePercent, 'max', $event)"
+        [minCurrentValue]="avgLifespan.currentMin"
+        [maxCurrentValue]="avgLifespan.currentMax"
+        (minCurrentValueChange)="applyRange('avgLifespan', avgLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('avgLifespan', avgLifespan, 'max', $event)"
       ></app-slider>
     </div>
     <div class="slider__fields-row">
       <input
         matInput
         type="text"
-        formControlName="avgLifespanChangePercentMinInput"
+        formControlName="avgLifespanMinInput"
         class="field"
         readonly
-        [(ngModel)]="avgLifespanChangePercent.currentMin">
+        step='0.01'
+        [(ngModel)]="avgLifespan.currentMin">
 
       <input
         matInput
         type="text"
-        formControlName="avgLifespanChangePercentMaxInput"
+        formControlName="avgLifespanMaxInput"
         class="field"
         readonly
-        [(ngModel)]="avgLifespanChangePercent.currentMax">
+        step='0.01'
+        [(ngModel)]="avgLifespan.currentMax">
     </div>
   </div>
 
@@ -74,31 +76,33 @@
     <label>Max lifespan change (%)</label>
     <div class="slider__range-wrapper">
       <app-slider
-        [minValue]="maxLifespanChangePercent.min"
-        [maxValue]="maxLifespanChangePercent.max"
+        [minValue]="maxLifespan.min"
+        [maxValue]="maxLifespan.max"
         [sliderStep]="slidersStep"
-        [minCurrentValue]="maxLifespanChangePercent.currentMin"
-        [maxCurrentValue]="maxLifespanChangePercent.currentMax"
-        (minCurrentValueChange)="applyRange('maxLifespanChangePercent', maxLifespanChangePercent, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('maxLifespanChangePercent', maxLifespanChangePercent, 'max', $event)"
+        [minCurrentValue]="maxLifespan.currentMin"
+        [maxCurrentValue]="maxLifespan.currentMax"
+        (minCurrentValueChange)="applyRange('maxLifespan', maxLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('maxLifespan', maxLifespan, 'max', $event)"
       ></app-slider>
     </div>
     <div class="slider__fields-row">
       <input
         matInput
         type="text"
-        formControlName="maxLifespanChangePercentMinInput"
+        formControlName="maxLifespanMinInput"
         class="field"
         readonly
-        [(ngModel)]="maxLifespanChangePercent.currentMin">
+        step='0.01'
+        [(ngModel)]="maxLifespan.currentMin">
 
       <input
         matInput
         type="text"
-        formControlName="maxLifespanChangePercentMaxInput"
+        formControlName="maxLifespanMaxInput"
         class="field"
         readonly
-        [(ngModel)]="maxLifespanChangePercent.currentMax">
+        step='0.01'
+        [(ngModel)]="maxLifespan.currentMax">
     </div>
   </div>
 </form>
