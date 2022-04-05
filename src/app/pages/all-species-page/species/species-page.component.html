@@ -31,7 +31,6 @@
         *ngIf="experimentsList.length !== 0"
         [length]="experimentsPageOptions.objTotal"
         [pageSize]="experimentsPageOptions.pagination.pageSize"
-        [pageSizeOptions]="null"
         (page)="pageEventHandler($event)"
         class="species__paginator"
         aria-label="Select page">
