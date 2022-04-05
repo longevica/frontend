@@ -5,12 +5,11 @@
         *ngIf="filtersOptions"
         [filters]="filtersOptions"
         (filterApplied)="retrieveAndSetParams(getExperimentsData)"
+        class="species__filters"
+        [class.species__filters--sticky]="!isMobile"
       ></app-filter-panel>
     </div>
     <div class="grid-container__content __w-content">
-      <h1 class="species__title">
-        Mus musculus
-      </h1>
       <div class="species__plot">
         <plotly-plot
           [data]="plotData"

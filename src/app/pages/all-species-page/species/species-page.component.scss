@@ -30,4 +30,14 @@
   &__paginator {
     margin-top: $padding-s;
   }
+
+  &__filters {
+    width: 100%;
+    display: inline-block;
+
+    &--sticky {
+      position: sticky;
+      top: $header-height + $padding-l;
+    }
+  }
 }
