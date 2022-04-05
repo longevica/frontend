@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { FilterTypes } from '../../../core/models/filter-params.model';
@@ -51,6 +51,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
   constructor(
     private filterParametersService: FilterParametersService,
+    private readonly cdRef: ChangeDetectorRef,
   ) {
     this.filtersForm = new FormGroup({
       interventionTypeSelect: new FormControl(['', Validators.minLength(1)]),
@@ -159,6 +160,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     const value = [field.currentMin, field.currentMax];
     this.filterParametersService.applyQueryParams(key, value);
     this.filterApplied.emit({ name: key, value: value });
+    this.cdRef.detectChanges();
   }
 
   public pickInterventions(): void {
