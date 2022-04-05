@@ -3,15 +3,15 @@ import { ExtraOptions, Routes } from '@angular/router';
 export const APP_ROUTES: Routes = [
   {
     path: '',
+    loadChildren: () => import('./pages/all-species-page/all-species-page.module').then((m) => m.AllSpeciesPageModule)
+  },
+  {
+    path: 'home',
     loadChildren: () => import('./pages/home/home-page.module').then((m) => m.HomePageModule),
   },
   {
     path: 'search',
     loadChildren: () => import('./pages/search/search-page.module').then((m) => m.SearchPageModule),
-  },
-  {
-    path: 'species',
-    loadChildren: () => import('./pages/all-species-page/all-species-page.module').then((m) => m.AllSpeciesPageModule)
   },
   {
     path: 'summary',

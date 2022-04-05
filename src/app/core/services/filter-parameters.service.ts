@@ -56,7 +56,10 @@ export class FilterParametersService {
       }
     }
     const urlTree = this.router.parseUrl(this.router.url);
-    const urlWithoutParams = urlTree.root.children['primary'].segments.map(it => it.path).join('/');
+    let urlWithoutParams = '/';
+    if (Object.keys(urlTree.root.children).length !== 0) {
+      urlWithoutParams = urlTree.root.children?.primary.segments.map(it => it.path).join('/');
+    }
 
     const filterParams = this.removeEmptyFields(this.appliedFiltersState);
     console.log('filterParams: ', filterParams);
