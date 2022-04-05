@@ -47,6 +47,7 @@ testem.log
 /typings
 .firebase/*
 *.cache
+*.*.cache
 
 # System Files
 .DS_Store
