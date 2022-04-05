@@ -22,10 +22,20 @@
       </div>
 
       <app-organism-table
-        [drugsData]="drugsData"
+        [drugsData]="experimentsList"
         [layout]="feedLayout"
         (checkedIds)="setPlotData($event)">
       </app-organism-table>
+
+      <mat-paginator
+        *ngIf="experimentsList.length !== 0"
+        [length]="experimentsPageOptions.objTotal"
+        [pageSize]="experimentsPageOptions.pagination.pageSize"
+        [pageSizeOptions]="null"
+        (page)="pageEventHandler($event)"
+        class="species__paginator"
+        aria-label="Select page">
+      </mat-paginator>
     </div>
   </div>
 </div>
