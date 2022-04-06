@@ -21,7 +21,7 @@
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('intervention', $event)">
         <mat-option *ngFor="let i of interventions"
-                    [value]="i.name">{{ i.name }}</mat-option>
+                    [value]="i.id">{{ i.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
