@@ -1,7 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
-import { FilterTypes } from '../../../core/models/filter-params.model';
+import {
+  FilterQueryParams,
+  FilterParamsToResponse,
+} from '../../../core/models/filter-response.model';
 import { Filters, Intervention } from '../../../core/models/api/filters.model';
 import { Subject } from 'rxjs';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
@@ -28,14 +31,28 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   public species: any[] | any | null;
   // Sliders
   public slidersStep = 5;
-  // - Avg lifespan change %
+  // - Avg lifespan change (units)
+  public minLifespan: RangeValue = {
+    min: 0,
+    max: 0,
+    currentMin: 0,
+    currentMax: 0,
+  };
+  // - Max lifespan change (units)
+  public medLifespan: RangeValue = {
+    min: 0,
+    max: 0,
+    currentMin: 0,
+    currentMax: 0,
+  };
+  // - Avg lifespan change (units)
   public avgLifespan: RangeValue = {
     min: 0,
     max: 0,
     currentMin: 0,
     currentMax: 0,
   };
-  // - Max lifespan change %
+  // - Max lifespan change (units)
   public maxLifespan: RangeValue = {
     min: 0,
     max: 0,
@@ -57,6 +74,10 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
       interventionTypeSelect: new FormControl(['', Validators.minLength(1)]),
       interventionsSelect: new FormControl([[], null]),
       speciesSelect: new FormControl(['', null]),
+      minLifespanMinInput: new FormControl(0, null),
+      minLifespanMaxInput: new FormControl(0, null),
+      medLifespanMinInput: new FormControl(0, null),
+      medLifespanMaxInput: new FormControl(0, null),
       avgLifespanMinInput: new FormControl(0, null),
       avgLifespanMaxInput: new FormControl(0, null),
       maxLifespanMinInput: new FormControl(0, null),
@@ -67,8 +88,8 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // FILTERS
     // Intervention types (select)
-    this.interventionTypes = this.getEntitiesList('interventionType');
-    this.filterParametersService.retrieveQueryParamFromUrl('interventionType')
+    this.interventionTypes = this.getEntitiesList('byInterventionType');
+    this.filterParametersService.retrieveQueryParamFromUrl('byInterventionType')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
         console.log('interventionType pram from url: ', res);
@@ -79,22 +100,34 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.pickInterventions();
 
     // Species (select)
-    this.species = this.getEntitiesList('species');
-    this.filterParametersService.retrieveQueryParamFromUrl('species')
+    this.species = this.getEntitiesList('bySpecies');
+    this.filterParametersService.retrieveQueryParamFromUrl('bySpecies')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
         this.selectedSpecies = res;
       });
 
-    // Avg lifespan change % (range slider)
-    this.avgLifespan.min = this.getEntitiesList('avgLifespan').min;
-    this.avgLifespan.max = this.getEntitiesList('avgLifespan').max;
+    // Min lifespan change units (range slider)
+    this.minLifespan.min = this.getEntitiesList('byMinLifespan')?.min ?? 0;
+    this.minLifespan.max = this.getEntitiesList('byMinLifespan')?.max ?? 0;
+    this.minLifespan.currentMin = this.minLifespan.min;
+    this.minLifespan.currentMax = this.minLifespan.max;
+
+    // Med lifespan change units (range slider)
+    this.medLifespan.min = this.getEntitiesList('byMedLifespan')?.min ?? 0;
+    this.medLifespan.max = this.getEntitiesList('byMedLifespan')?.max ?? 0;
+    this.medLifespan.currentMin = this.medLifespan.min;
+    this.medLifespan.currentMax = this.medLifespan.max;
+
+    // Avg lifespan change units (range slider)
+    this.avgLifespan.min = this.getEntitiesList('byAvgLifespan')?.min ?? 0;
+    this.avgLifespan.max = this.getEntitiesList('byAvgLifespan')?.max ?? 0;
     this.avgLifespan.currentMin = this.avgLifespan.min;
     this.avgLifespan.currentMax = this.avgLifespan.max;
 
-    // Max lifespan change % (range slider)
-    this.maxLifespan.min = this.getEntitiesList('maxLifespan').min;
-    this.maxLifespan.max = this.getEntitiesList('maxLifespan').max;
+    // Max lifespan change units (range slider)
+    this.maxLifespan.min = this.getEntitiesList('byMaxLifespan')?.min ?? 0;
+    this.maxLifespan.max = this.getEntitiesList('byMaxLifespan')?.max ?? 0;
     this.maxLifespan.currentMin = this.maxLifespan.min;
     this.maxLifespan.currentMax = this.maxLifespan.max;
   }
@@ -118,9 +151,10 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
    * Get entities for filters lists
    */
 
-  private getEntitiesList(key: FilterTypes): any[] | any | null {
-    if (this.filters && this.filters[key]) {
-      return this.filters[key];
+  private getEntitiesList(key: FilterQueryParams): any[] | any | null {
+    const k = FilterParamsToResponse[key];
+    if (this.filters && this.filters[k]) {
+      return this.filters[k];
     }
 
     return null;
@@ -135,20 +169,20 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
    */
 
   // tslint:disable-next-line:ban-types
-  apply(key: FilterTypes, $event: MatSelectChange, callback?: Function): void {
+  apply(key: FilterQueryParams, $event: MatSelectChange, callback?: Function): void {
     let value = $event.value;
     if (Array.isArray($event.value)) {
       value = $event.value[0];
     }
 
     this.filterParametersService.applyQueryParams(key, value);
-    this.filterApplied.emit({name: key, value: value});
+    this.filterApplied.emit({name: key, value});
     if (callback) {
       callback.call(this);
     }
   }
 
-  applyRange(key: FilterTypes, field: any, rangePoint: 'min' | 'max', $event: number): void {
+  applyRange(key: FilterQueryParams, field: any, rangePoint: 'min' | 'max', $event: number): void {
     switch (rangePoint) {
       case 'min':
         field.currentMin = Math.floor($event);
@@ -159,7 +193,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
     const value = [field.currentMin, field.currentMax];
     this.filterParametersService.applyQueryParams(key, value);
-    this.filterApplied.emit({ name: key, value: value });
+    this.filterApplied.emit({ name: key, value });
     this.cdRef.detectChanges();
   }
 
@@ -168,9 +202,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.selectedInterventions = [];
     this.filterApplied.emit({name: 'interventions', value: []});
     // Show a list of interventions filtered by a 'type' field
-    const interventions = this.getEntitiesList('intervention');
-    this.interventions = interventions.filter((intervention: Intervention) => intervention?.type == this.selectedInterventionType);
-    this.filterParametersService.retrieveQueryParamFromUrl('intervention')
+    const interventions = this.getEntitiesList('byIntervention');
+    this.interventions = interventions.filter((intervention: Intervention) => intervention?.type === this.selectedInterventionType);
+    this.filterParametersService.retrieveQueryParamFromUrl('byIntervention')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
         // @ts-ignore

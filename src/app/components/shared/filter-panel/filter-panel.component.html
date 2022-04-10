@@ -5,7 +5,7 @@
       <mat-select formControlName="interventionTypeSelect"
                   [(ngModel)]="selectedInterventionType"
                   [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('interventionType', $event, pickInterventions)">
+                  (selectionChange)="apply('byInterventionType', $event, pickInterventions)">
         <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of interventionTypes"
                     [value]="i.name">{{ i.name }}</mat-option>
@@ -19,7 +19,7 @@
                   [disabled]="interventions.length === 0"
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('intervention', $event)">
+                  (selectionChange)="apply('byIntervention', $event)">
         <mat-option *ngFor="let i of interventions"
                     [value]="i.id">{{ i.name }}</mat-option>
       </mat-select>
@@ -30,7 +30,7 @@
       <mat-select formControlName="speciesSelect"
                   [(ngModel)]="selectedSpecies"
                   [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('species', $event)">
+                  (selectionChange)="apply('bySpecies', $event)">
         <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of species"
                     [value]="i.name">{{ i.name }}</mat-option>
@@ -38,7 +38,74 @@
     </mat-form-field>
   </div>
 
-  <div class="filters-panel__slider">
+  <div *ngIf="minLifespan.max !== 0"
+       class="filters-panel__slider">
+    <label>Min lifespan change</label>
+    <div class="slider__range-wrapper">
+      <app-slider
+        [minValue]="minLifespan.min"
+        [maxValue]="minLifespan.max"
+        [sliderStep]="slidersStep"
+        [minCurrentValue]="minLifespan.currentMin"
+        [maxCurrentValue]="minLifespan.currentMax"
+        (minCurrentValueChange)="applyRange('byMinLifespan', minLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('byMinLifespan', minLifespan, 'max', $event)"
+      ></app-slider>
+    </div>
+    <div class="slider__fields-row">
+      <input
+        matInput
+        type="text"
+        formControlName="minLifespanMinInput"
+        class="field"
+        readonly
+        [(ngModel)]="minLifespan.currentMin">
+
+      <input
+        matInput
+        type="text"
+        formControlName="minLifespanMaxInput"
+        class="field"
+        readonly
+        [(ngModel)]="minLifespan.currentMax">
+    </div>
+  </div>
+
+  <div *ngIf="medLifespan.max !== 0"
+       class="filters-panel__slider">
+    <label>Med lifespan change</label>
+    <div class="slider__range-wrapper">
+      <app-slider
+        [minValue]="medLifespan.min"
+        [maxValue]="medLifespan.max"
+        [sliderStep]="slidersStep"
+        [minCurrentValue]="medLifespan.currentMin"
+        [maxCurrentValue]="medLifespan.currentMax"
+        (minCurrentValueChange)="applyRange('byMedLifespan', medLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('byMedLifespan', medLifespan, 'max', $event)"
+      ></app-slider>
+    </div>
+    <div class="slider__fields-row">
+      <input
+        matInput
+        type="text"
+        formControlName="medLifespanMinInput"
+        class="field"
+        readonly
+        [(ngModel)]="medLifespan.currentMin">
+
+      <input
+        matInput
+        type="text"
+        formControlName="medLifespanMaxInput"
+        class="field"
+        readonly
+        [(ngModel)]="medLifespan.currentMax">
+    </div>
+  </div>
+
+  <div *ngIf="avgLifespan.max !== 0"
+       class="filters-panel__slider">
     <label>Average lifespan change</label>
     <div class="slider__range-wrapper">
       <app-slider
@@ -47,8 +114,8 @@
         [sliderStep]="slidersStep"
         [minCurrentValue]="avgLifespan.currentMin"
         [maxCurrentValue]="avgLifespan.currentMax"
-        (minCurrentValueChange)="applyRange('avgLifespan', avgLifespan, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('avgLifespan', avgLifespan, 'max', $event)"
+        (minCurrentValueChange)="applyRange('byAvgLifespan', avgLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('byAvgLifespan', avgLifespan, 'max', $event)"
       ></app-slider>
     </div>
     <div class="slider__fields-row">
@@ -70,7 +137,8 @@
     </div>
   </div>
 
-  <div class="filters-panel__slider">
+  <div *ngIf="maxLifespan.max !== 0"
+       class="filters-panel__slider">
     <label>Max lifespan change</label>
     <div class="slider__range-wrapper">
       <app-slider
@@ -79,8 +147,8 @@
         [sliderStep]="slidersStep"
         [minCurrentValue]="maxLifespan.currentMin"
         [maxCurrentValue]="maxLifespan.currentMax"
-        (minCurrentValueChange)="applyRange('maxLifespan', maxLifespan, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('maxLifespan', maxLifespan, 'max', $event)"
+        (minCurrentValueChange)="applyRange('byMaxLifespan', maxLifespan, 'min', $event)"
+        (maxCurrentValueChange)="applyRange('byMaxLifespan', maxLifespan, 'max', $event)"
       ></app-slider>
     </div>
     <div class="slider__fields-row">

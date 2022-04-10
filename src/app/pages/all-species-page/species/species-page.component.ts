@@ -8,7 +8,10 @@ import { WindowWidthService } from '../../../core/services/browser/window-width.
 import { ExperimentApiService } from '../../../core/services/api/experiment-api.service';
 import { PlotDataService } from '../../../core/services/api/plot-data.service';
 import { Filters } from '../../../core/models/api/filters.model';
-import { FilterParamsModel, FilterTypes } from '../../../core/models/filter-params.model';
+import {
+  FilterQueryParams,
+  FilterStateModel,
+} from '../../../core/models/filter-response.model';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -44,7 +47,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   };
   public windowSizeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private filterParams: Partial<FilterParamsModel>;
+  private filterParams: FilterStateModel;
   private unsubscribe$ = new Subject();
 
   constructor(
@@ -90,10 +93,10 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       console.log(params);
       for (const key in params) {
         if (params.hasOwnProperty(key)) {
-          if (params[key as FilterTypes]?.length === 0) {
-            delete params[key as FilterTypes];
-          } else if (params[key as FilterTypes] === undefined) {
-            delete params[key as FilterTypes];
+          if (params[key as FilterQueryParams]?.length === 0) {
+            delete params[key as FilterQueryParams];
+          } else if (params[key as FilterQueryParams] === undefined) {
+            delete params[key as FilterQueryParams];
           }
         }
       }
