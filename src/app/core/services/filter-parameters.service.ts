@@ -51,12 +51,19 @@ export class FilterParametersService {
       .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
   }
 
+  private sanitize(url: string | any): string {
+    if (typeof url === 'string') {
+      return url.replace('/', '%2F');
+    }
+    return url;
+  }
+
   public applyQueryParams(param: string, value: any | any[]): void {
     if (this.appliedFiltersState.hasOwnProperty(param)) {
       if (Array.isArray(value)) {
-        this.appliedFiltersState[param as keyof FilterResponseModel] = value.join(',');
+        this.appliedFiltersState[param as keyof FilterResponseModel] = value.filter((p) => this.sanitize(p)).join(',');
       } else {
-        this.appliedFiltersState[param as keyof FilterResponseModel] = value;
+        this.appliedFiltersState[param as keyof FilterResponseModel] = this.sanitize(value);
       }
     }
     const urlTree = this.router.parseUrl(this.router.url);
