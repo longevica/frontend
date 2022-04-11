@@ -32,6 +32,8 @@ export type FilterQueryParams =
   | 'byIntervention'
   | 'bySpecies'
   | 'byStrain'
+  | 'byMinLifespanChangePercent'
+  | 'byMedLifespanChangePercent'
   | 'byAvgLifespanChangePercent'
   | 'byMaxLifespanChangePercent'
   | 'byMinLifespan'
