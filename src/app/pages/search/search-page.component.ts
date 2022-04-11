@@ -53,7 +53,7 @@ export class SearchPageComponent implements OnInit {
     this.search($query);
   }
 
-  private updateExperimentsListByFilterParams(filterParams: FilterResponseModel): void {
+  private updateSearchFeedByFilterParams(filterParams: FilterResponseModel): void {
     const arrayOfValues = Object.values(filterParams).filter(res => res);
 
     if (!arrayOfValues.length) {
