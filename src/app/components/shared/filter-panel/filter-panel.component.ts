@@ -173,48 +173,112 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.minLifespan.max = this.getEntitiesList('byMinLifespan')?.max ?? 0;
     this.minLifespan.currentMin = this.minLifespan.min;
     this.minLifespan.currentMax = this.minLifespan.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMinLifespan')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.minLifespan.currentMin = res.split(',')[0];
+          this.minLifespan.currentMax = res.split(',')[1];
+        }
+      });
 
     // Med lifespan change units (range slider)
     this.medLifespan.min = this.getEntitiesList('byMedLifespan')?.min ?? 0;
     this.medLifespan.max = this.getEntitiesList('byMedLifespan')?.max ?? 0;
     this.medLifespan.currentMin = this.medLifespan.min;
     this.medLifespan.currentMax = this.medLifespan.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMedLifespan')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.medLifespan.currentMin = res.split(',')[0];
+          this.medLifespan.currentMax = res.split(',')[1];
+        }
+      });
 
     // Avg lifespan change units (range slider)
     this.avgLifespan.min = this.getEntitiesList('byAvgLifespan')?.min ?? 0;
     this.avgLifespan.max = this.getEntitiesList('byAvgLifespan')?.max ?? 0;
     this.avgLifespan.currentMin = this.avgLifespan.min;
     this.avgLifespan.currentMax = this.avgLifespan.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byAvgLifespan')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.avgLifespan.currentMin = res.split(',')[0];
+          this.avgLifespan.currentMax = res.split(',')[1];
+        }
+      });
 
     // Max lifespan change units (range slider)
     this.maxLifespan.min = this.getEntitiesList('byMaxLifespan')?.min ?? 0;
     this.maxLifespan.max = this.getEntitiesList('byMaxLifespan')?.max ?? 0;
     this.maxLifespan.currentMin = this.maxLifespan.min;
     this.maxLifespan.currentMax = this.maxLifespan.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMaxLifespan')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.maxLifespan.currentMin = res.split(',')[0];
+          this.maxLifespan.currentMax = res.split(',')[1];
+        }
+      });
 
     // Min lifespan change percent (range slider)
     this.minLifespanChangePercent.min = this.getEntitiesList('byMinLifespanChangePercent')?.min ?? 0;
     this.minLifespanChangePercent.max = this.getEntitiesList('byMinLifespanChangePercent')?.max ?? 0;
     this.minLifespanChangePercent.currentMin = this.minLifespanChangePercent.min;
     this.minLifespanChangePercent.currentMax = this.minLifespanChangePercent.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMinLifespanChangePercent')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.minLifespanChangePercent.currentMin = res.split(',')[0];
+          this.minLifespanChangePercent.currentMax = res.split(',')[1];
+        }
+      });
 
     // Med lifespan change percent (range slider)
     this.medLifespanChangePercent.min = this.getEntitiesList('byMedLifespanChangePercent')?.min ?? 0;
     this.medLifespanChangePercent.max = this.getEntitiesList('byMedLifespanChangePercent')?.max ?? 0;
     this.medLifespanChangePercent.currentMin = this.medLifespanChangePercent.min;
     this.medLifespanChangePercent.currentMax = this.medLifespanChangePercent.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMedLifespanChangePercent')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.medLifespanChangePercent.currentMin = res.split(',')[0];
+          this.medLifespanChangePercent.currentMax = res.split(',')[1];
+        }
+      });
 
     // Avg lifespan change percent (range slider)
     this.avgLifespanChangePercent.min = this.getEntitiesList('byAvgLifespanChangePercent')?.min ?? 0;
     this.avgLifespanChangePercent.max = this.getEntitiesList('byAvgLifespanChangePercent')?.max ?? 0;
     this.avgLifespanChangePercent.currentMin = this.avgLifespanChangePercent.min;
     this.avgLifespanChangePercent.currentMax = this.avgLifespanChangePercent.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byAvgLifespanChangePercent')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.avgLifespanChangePercent.currentMin = res.split(',')[0];
+          this.avgLifespanChangePercent.currentMax = res.split(',')[1];
+        }
+      });
 
     // Max lifespan change percent (range slider)
     this.maxLifespanChangePercent.min = this.getEntitiesList('byMaxLifespanChangePercent')?.min ?? 0;
     this.maxLifespanChangePercent.max = this.getEntitiesList('byMaxLifespanChangePercent')?.max ?? 0;
     this.maxLifespanChangePercent.currentMin = this.maxLifespanChangePercent.min;
     this.maxLifespanChangePercent.currentMax = this.maxLifespanChangePercent.max;
+    this.filterParametersService.retrieveQueryParamFromUrl('byMaxLifespanChangePercent')
+      .pipe(takeUntil(this.subscription$))
+      .subscribe((res) => {
+        if (res) {
+          this.maxLifespanChangePercent.currentMin = res.split(',')[0];
+          this.maxLifespanChangePercent.currentMax = res.split(',')[1];
+        }
+      });
   }
 
   ngOnDestroy(): void {
