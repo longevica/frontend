@@ -17,7 +17,9 @@ export interface FilterStateModel {
   byIntervention: any[];
   bySpecies: any;
   byStrain: any[];
-  byAvgLifespanChangePercent: any; // TODO: typing
+  byMinLifespanChangePercent: any; // TODO: typing
+  byMedLifespanChangePercent: any;
+  byAvgLifespanChangePercent: any;
   byMaxLifespanChangePercent: any;
   byMinLifespan: any;
   byMedLifespan: any;

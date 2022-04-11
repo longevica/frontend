@@ -32,10 +32,10 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   public species: any[] | any | null;
   // Strain
   public selectedStrain: any;
-  public strain: string | null;
+  public strain: any[] | null;
   // Year
   public selectedYear: any;
-  public year: string | null;
+  public year: any[] | null;
 
   // Sliders
   public slidersStep = 5;

@@ -10,7 +10,7 @@ import { FilterQueryParams, FilterResponseModel, FilterStateModel } from '../mod
 export class FilterParametersService {
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   private appliedFiltersState: any = {
@@ -20,6 +20,8 @@ export class FilterParametersService {
     byMaxLifespan: [],
     byIntervention: [],
     byInterventionType: undefined,
+    byMinLifespanChangePercent: [],
+    byMedLifespanChangePercent: [],
     byAvgLifespanChangePercent: [],
     byMaxLifespanChangePercent: [],
     bySpecies: undefined,

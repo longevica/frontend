@@ -46,7 +46,7 @@
                   [disabled]="!selectedSpecies">
         <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of strain"
-                    [value]="i['name']">{{ i['name'] }}</mat-option>
+                    [value]="i.name">{{ i.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
