@@ -138,7 +138,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byInterventionType')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        console.log('interventionType pram from url: ', res);
+        console.log('interventionType param from url: ', res);
         this.selectedInterventionType = res;
       });
 
@@ -325,7 +325,8 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   apply(key: FilterQueryParams, $event: MatSelectChange, callback?: Function): void {
     let value = $event.value;
     if (Array.isArray($event.value)) {
-      value = $event.value[0];
+      value = $event.value.join(',');
+      console.log('apply', value);
     }
 
     this.filterParametersService.applyQueryParams(key, value);
@@ -352,17 +353,27 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
   public pickInterventions(): void {
     // Cancel interventions' selected option before
-    this.selectedInterventions = [];
-    this.filterApplied.emit({ name: 'interventions', value: [] });
+    this.filterParametersService.applyQueryParams('byIntervention', []);
+    this.filterApplied.emit({ name: 'byIntervention', value: [] });
+
     // Show a list of interventions filtered by a 'type' field
-    const interventions = this.getEntitiesList('byIntervention');
-    this.interventions = interventions.filter((intervention: Intervention) => intervention?.type === this.selectedInterventionType);
-    this.filterParametersService.retrieveQueryParamFromUrl('byIntervention')
+    if (this.selectedInterventionType) {
+      this.interventions = this.getEntitiesList('byIntervention').filter(
+        (intervention: Intervention) => intervention?.type === this.selectedInterventionType
+      );
+    }
+
+    this.filterParametersService
+      .retrieveQueryParamFromUrl('byIntervention')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        // @ts-ignore
-        this.selectedInterventions = new Array(res);
-        console.log('pickInterventions: ', this.selectedInterventions);
+        if (res) {
+          // @ts-ignore
+          const indexes = res.split(',').map((i) => Number(i));
+          const matchingInterventions = this.interventions.filter((item: any) => indexes.includes(item.id));
+          this.selectedInterventions = matchingInterventions.map((item: any) => item.id);
+        }
       });
+    this.cdRef.detectChanges();
   }
 }

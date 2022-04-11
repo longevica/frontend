@@ -79,6 +79,7 @@ export class FilterParametersService {
       [urlWithoutParams],
       {
         queryParams: { ...filterParams },
+        queryParamsHandling: 'merge',
       });
   }
 }

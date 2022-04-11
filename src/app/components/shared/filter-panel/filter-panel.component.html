@@ -13,10 +13,20 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Intervention</mat-label>
+      <mat-label [ngSwitch]="selectedInterventionType">
+        <ng-container *ngSwitchCase="'drug'">
+          Drug interventions
+        </ng-container>
+        <ng-container *ngSwitchCase="'diet'">
+          Diet interventions
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          Interventions
+        </ng-container>
+      </mat-label>
       <mat-select formControlName="interventionsSelect"
                   multiple
-                  [disabled]="interventions.length === 0"
+                  [disabled]="interventions?.length === 0"
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byIntervention', $event)">
