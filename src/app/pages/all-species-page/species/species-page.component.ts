@@ -24,6 +24,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   public experimentsList: Experiment[] = [];
   public filtersOptions: Filters;
   public experimentsPageOptions: PageOptions;
+  public loaderVisible = true;
   public feedLayout: 'table' | 'cards';
   public page = 1;
   public plotData: any[] = [];
@@ -111,7 +112,8 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   }
 
   public getExperimentsData(): void {
-    const filterParams = this.filterParams ? this.filterParams : null;
+    this.loaderVisible = true;
+    const filterParams = this.filterParams ? this.filterParams : {};
     console.log('filterParams, page ', filterParams, this.page);
     this.experimentApiService.getExperiments(filterParams, this.page)
       .pipe(
@@ -140,6 +142,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
               y: plot.coordinates.y,
             };
           });
+          this.loaderVisible = false;
         });
     } else {
       this.plotData = [];

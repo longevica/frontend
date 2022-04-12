@@ -20,11 +20,21 @@
         </plotly-plot>
       </div>
 
-      <app-organism-table
-        [experimentsData]="experimentsList"
-        [layout]="feedLayout"
-        (checkedIds)="setPlotData($event)">
-      </app-organism-table>
+      <div class="species__feed">
+        <app-organism-table
+          [experimentsData]="experimentsList"
+          [layout]="feedLayout"
+          (checkedIds)="setPlotData($event)">
+        </app-organism-table>
+
+        <div *ngIf="loaderVisible"
+             class="overlay">
+          <mat-spinner class="overlay__spinner"
+                       color="accent"
+                       diameter="40"
+          ></mat-spinner>
+        </div>
+      </div>
 
       <mat-paginator
         *ngIf="experimentsList.length !== 0"

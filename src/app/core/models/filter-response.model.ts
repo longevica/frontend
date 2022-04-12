@@ -3,7 +3,9 @@ export interface FilterResponseModel {
   intervention: any[];
   species: any;
   strain: any[];
-  avgLifespanChangePercent: any; // TODO: typing
+  minLifespanChangePercent: any;  // TODO: typing
+  medLifespanChangePercent: any;
+  avgLifespanChangePercent: any;
   maxLifespanChangePercent: any;
   minLifespan: any;
   medLifespan: any;
