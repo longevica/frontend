@@ -12,21 +12,27 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill"
+                    (mousedown)="pickInterventions()">
       <mat-label [ngSwitch]="selectedInterventionType">
         <ng-container *ngSwitchCase="'drug'">
-          Drug interventions
+          <ng-container *ngIf="interventions?.length !== 0; else noInterventions">
+            Select drugs
+          </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'diet'">
-          Diet interventions
+          <ng-container *ngIf="interventions?.length !== 0; else noInterventions">
+            Select diets
+          </ng-container>
         </ng-container>
         <ng-container *ngSwitchDefault>
           Interventions
         </ng-container>
+        <ng-template #noInterventions>No interventions</ng-template>
       </mat-label>
       <mat-select formControlName="interventionsSelect"
                   multiple
-                  [disabled]="interventions?.length === 0"
+                  [disabled]="isAnyIntervention | async"
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byIntervention', $event)">

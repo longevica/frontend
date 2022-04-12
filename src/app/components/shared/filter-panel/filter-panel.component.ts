@@ -6,7 +6,7 @@ import {
   FilterParamsToResponse,
 } from '../../../core/models/filter-response.model';
 import { Filters, Intervention } from '../../../core/models/api/filters.model';
-import { Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
 import { takeUntil } from 'rxjs/operators';
 
@@ -25,8 +25,8 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   public selectedInterventionType = '';
   public interventionTypes: any[] | any | null;
   // - Intervention type - interventions (multiple)
-  public selectedInterventions = [];
-  public interventions: any[] | any | null;
+  public selectedInterventions: any[] = [];
+  public interventions: any[] = [];
   // - Species
   public selectedSpecies: any;
   public species: any[] | any | null;
@@ -97,9 +97,16 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     currentMax: 0,
   };
 
-  private subscription$ = new Subject();
+  public isAnyIntervention = new Observable<any>();
 
-  @Input() filters: Filters;
+  private subscription$ = new Subject();
+  private filters: Filters;
+
+  @Input()
+  set filterOptions(f: Filters) {
+    this.filters = f;
+    Object.freeze(this.filters);
+  }
   @Output() filterApplied: EventEmitter<{ name: string, value: any }> = new EventEmitter<{ name: string, value: any }>();
 
   constructor(
@@ -132,13 +139,14 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isAnyIntervention = of(!this.interventions.length);
+
     // FILTERS
     // Intervention types (select)
     this.interventionTypes = this.getEntitiesList('byInterventionType');
     this.filterParametersService.retrieveQueryParamFromUrl('byInterventionType')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        console.log('interventionType param from url: ', res);
         this.selectedInterventionType = res;
       });
 
@@ -301,14 +309,10 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
    */
 
   private getEntitiesList(key: FilterQueryParams): any[] | any | null {
-    // @ts-ignore // TODO: use strict typing but avoid excessive types
-    const k = FilterParamsToResponse[key];
-    // @ts-ignore
+    const k = FilterParamsToResponse[key as FilterQueryParams];
     if (this.filters && this.filters[k]) {
-      // @ts-ignore
       return this.filters[k];
     }
-
     return null;
   }
 
@@ -326,7 +330,6 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     let value = $event.value;
     if (Array.isArray($event.value)) {
       value = $event.value.join(',');
-      console.log('apply', value);
     }
 
     this.filterParametersService.applyQueryParams(key, value);
@@ -352,16 +355,17 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   }
 
   public pickInterventions(): void {
-    // Cancel interventions' selected option before
-    this.filterParametersService.applyQueryParams('byIntervention', []);
-    this.filterApplied.emit({ name: 'byIntervention', value: [] });
+    this.interventions = this.filters.intervention;
 
     // Show a list of interventions filtered by a 'type' field
-    if (this.selectedInterventionType) {
-      this.interventions = this.getEntitiesList('byIntervention').filter(
-        (intervention: Intervention) => intervention?.type === this.selectedInterventionType
-      );
+    if (this.selectedInterventionType?.length !== 0) {
+      this.interventions = this.filters.intervention
+        .filter((intervention: Intervention) => {
+          return intervention.id !== null && intervention.type === this.selectedInterventionType ;
+        });
     }
+
+    this.isAnyIntervention = of(!this.interventions.length);
 
     this.filterParametersService
       .retrieveQueryParamFromUrl('byIntervention')
@@ -374,6 +378,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
           this.selectedInterventions = matchingInterventions.map((item: any) => item.id);
         }
       });
+
     this.cdRef.detectChanges();
   }
 }

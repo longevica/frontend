@@ -3,7 +3,7 @@
     <div class="grid-container__sidebar">
       <app-filter-panel
         *ngIf="filtersOptions"
-        [filters]="filtersOptions"
+        [filterOptions]="filtersOptions"
         (filterApplied)="retrieveAndSetParams(getExperimentsData)"
         class="species__filters"
         [class.species__filters--sticky]="!isMobile"

@@ -50,6 +50,8 @@ export enum FilterParamsToResponse {
   byIntervention = 'intervention',
   bySpecies = 'species',
   byStrain = 'strain',
+  byMinLifespanChangePercent = 'minLifespanChangePercent',
+  byMedLifespanChangePercent = 'medLifespanChangePercent',
   byAvgLifespanChangePercent = 'avgLifespanChangePercent',
   byMaxLifespanChangePercent = 'maxLifespanChangePercent',
   byMinLifespan = 'minLifespan',
