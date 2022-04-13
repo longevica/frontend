@@ -9,6 +9,7 @@ import { Filters, Intervention } from '../../../core/models/api/filters.model';
 import { Observable, of, Subject } from 'rxjs';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 type RangeValue = { [key: string]: number };
 
@@ -111,6 +112,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
   constructor(
     private filterParametersService: FilterParametersService,
+    protected snackBar: MatSnackBar,
     private readonly cdRef: ChangeDetectorRef,
   ) {
     this.filtersForm = new FormGroup({
@@ -139,7 +141,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isAnyIntervention = of(!this.interventions.length);
+    this.isAnyIntervention = of(!!this.interventions.length);
 
     // FILTERS
     // Intervention types (select)
@@ -161,19 +163,19 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         this.selectedSpecies = res;
       });
 
-    // TODO: Strain should be selected only if it matches species
+    // TODO: Remove species filter or use for backwards compatibility
     this.strain = this.getEntitiesList('byStrain');
     this.filterParametersService.retrieveQueryParamFromUrl('byStrain')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedStrain = res;
+        this.selectedStrain = this.filterParametersService.decode(res);
       });
 
     this.year = this.getEntitiesList('byYear');
     this.filterParametersService.retrieveQueryParamFromUrl('byYear')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedYear = res;
+        this.selectedYear = Number(res);
       });
 
     // Min lifespan change units (range slider)
@@ -299,6 +301,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
   public compareSelectValues(value1: any | any[], value2: any): boolean {
     if (value1 && value2) {
+      console.log(value1, value2, value1 === value2);
       return value1 === value2;
     }
     return false;
@@ -365,7 +368,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         });
     }
 
-    this.isAnyIntervention = of(!this.interventions.length);
+    this.isAnyIntervention = of(!!this.interventions.length);
 
     this.filterParametersService
       .retrieveQueryParamFromUrl('byIntervention')
@@ -380,5 +383,18 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
       });
 
     this.cdRef.detectChanges();
+  }
+
+  public interventionsSelectVaidation(): void {
+    if (!this.selectedInterventionType) {
+      this.snackBar.open(
+        'Please select an intervention type first', '', {
+          verticalPosition: 'top',
+          duration: 700,
+        }
+      );
+    }
+
+    return;
   }
 }

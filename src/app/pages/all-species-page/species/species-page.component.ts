@@ -122,6 +122,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       this.experimentsList = res.items;
       this.filtersOptions = res.filters;
       this.experimentsPageOptions = res.options;
+      this.loaderVisible = false;
     });
     // TODO: Error handling
   }

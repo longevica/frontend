@@ -32,24 +32,15 @@
       </mat-label>
       <mat-select formControlName="interventionsSelect"
                   multiple
-                  [disabled]="isAnyIntervention | async"
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('byIntervention', $event)">
-        <mat-option *ngFor="let i of interventions"
-                    [value]="i.id">{{ i.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Species</mat-label>
-      <mat-select formControlName="speciesSelect"
-                  [(ngModel)]="selectedSpecies"
-                  [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('bySpecies', $event)">
-        <mat-option [value]="">not set</mat-option>
-        <mat-option *ngFor="let i of species"
-                    [value]="i.name">{{ i.name }}</mat-option>
+                  (selectionChange)="apply('byIntervention', $event)"
+                  (click)="interventionsSelectVaidation()"
+      >
+        <ng-container *ngIf="isAnyIntervention | async">
+          <mat-option *ngFor="let i of interventions"
+                      [value]="i.id">{{ i.name }}</mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 
@@ -58,8 +49,7 @@
       <mat-select formControlName="strainSelect"
                   [(ngModel)]="selectedStrain"
                   [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('byStrain', $event)"
-                  [disabled]="!selectedSpecies">
+                  (selectionChange)="apply('byStrain', $event)">
         <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of strain"
                     [value]="i.name">{{ i.name }}</mat-option>

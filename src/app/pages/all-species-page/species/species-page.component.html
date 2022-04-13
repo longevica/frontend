@@ -27,13 +27,13 @@
           (checkedIds)="setPlotData($event)">
         </app-organism-table>
 
-        <div *ngIf="loaderVisible"
+        <mat-error *ngIf="loaderVisible"
              class="overlay">
           <mat-spinner class="overlay__spinner"
                        color="accent"
                        diameter="40"
           ></mat-spinner>
-        </div>
+        </mat-error>
       </div>
 
       <mat-paginator
