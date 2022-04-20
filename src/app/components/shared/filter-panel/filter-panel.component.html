@@ -47,12 +47,13 @@
     <mat-form-field appearance="fill">
       <mat-label>Strain</mat-label>
       <mat-select formControlName="strainSelect"
+                  multiple
                   [(ngModel)]="selectedStrain"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byStrain', $event)">
         <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of strain"
-                    [value]="i.name">{{ i.name }}</mat-option>
+                    [value]="i.id">{{ i.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
