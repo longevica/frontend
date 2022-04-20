@@ -12,11 +12,11 @@
     color: $color-gray-700;
     border-width: 2px;
 
-    &--outset {
-      div {
-        padding-top: 1.5ch;
-      }
+    & > div {
+      padding-top: 1.5ch;
+    }
 
+    &--outset {
       span {
         position: absolute;
         top: 0;
