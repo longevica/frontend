@@ -13,15 +13,19 @@
 }
 
 .species {
+  @mixin panel {
+    background: $color-white;
+    box-shadow: 0 3px 3px 0 rgba($color-black, 0.15);
+    border-radius: 5px;
+  }
+
   &__title {
     font-size: 1.8em;
     font-weight: $font-weight-medium;
   }
 
   &__plot {
-    background: $color-white;
-    box-shadow: 0 3px 3px 0 rgba($color-black, 0.15);
-    border-radius: 5px;
+    @include panel;
     overflow: hidden;
     margin-bottom: 20px;
     padding: $padding-l 0;
@@ -49,6 +53,17 @@
     }
   }
 
+  &__error {
+    @include panel;
+    display: block;
+    width: 100%;
+    padding: 60px $padding-m;
+    font-size: 1.2em;
+    font-weight: $font-weight-medium;
+    text-align: center;
+    margin-top: $padding-m;
+  }
+
   &__paginator {
     margin-top: $padding-s;
   }
@@ -63,3 +78,5 @@
     }
   }
 }
+
+

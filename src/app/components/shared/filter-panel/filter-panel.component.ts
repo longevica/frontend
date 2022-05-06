@@ -32,7 +32,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   public selectedSpecies: any;
   public species: any[] | any | null;
   // Strain
-  public selectedStrain: any;
+  public selectedStrain: any[] = [];
   public strain: any[] | null;
   // Year
   public selectedYear: any;
@@ -119,7 +119,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
       interventionTypeSelect: new FormControl(['', Validators.minLength(1)]),
       interventionsSelect: new FormControl([[], null]),
       speciesSelect: new FormControl(['', null]),
-      strainSelect: new FormControl(['', null]),
+      strainSelect: new FormControl([[], null]),
       yearSelect: new FormControl(['', null]),
       minLifespanMinInput: new FormControl(0, null),
       minLifespanMaxInput: new FormControl(0, null),
@@ -168,7 +168,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byStrain')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedStrain = this.filterParametersService.decode(res);
+        this.selectedStrain.push(this.filterParametersService.decode(res));
       });
 
     this.year = this.getEntitiesList('byYear');
@@ -362,10 +362,14 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
     // Show a list of interventions filtered by a 'type' field
     if (this.selectedInterventionType?.length !== 0) {
-      this.interventions = this.filters.intervention
-        .filter((intervention: Intervention) => {
-          return intervention.id !== null && intervention.type === this.selectedInterventionType ;
-        });
+      try {
+        this.interventions = this.filters.intervention
+          .filter((intervention: Intervention) => {
+            return intervention.id !== null && intervention.type === this.selectedInterventionType ;
+          });
+      } catch {
+        return;
+      }
     }
 
     this.isAnyIntervention = of(!!this.interventions.length);

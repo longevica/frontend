@@ -25,6 +25,8 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   public filtersOptions: Filters;
   public experimentsPageOptions: PageOptions;
   public loaderVisible = true;
+  public showFeed = false;
+  public errorMessage = '';
   public feedLayout: 'table' | 'cards';
   public page = 1;
   public plotData: any[] = [];
@@ -123,8 +125,17 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       this.filtersOptions = res.filters;
       this.experimentsPageOptions = res.options;
       this.loaderVisible = false;
+      if (res.items.length > 0) {
+        this.showFeed = true;
+        this.errorMessage = '';
+      } else {
+        this.showFeed = false;
+      }
+    },
+      (error) => {
+        this.showFeed = false;
+        this.errorMessage = error.message;
     });
-    // TODO: Error handling
   }
 
   public setPlotData(drugIds: number[]): void {
