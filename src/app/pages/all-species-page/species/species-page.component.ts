@@ -25,7 +25,7 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   public filtersOptions: Filters;
   public experimentsPageOptions: PageOptions;
   public loaderVisible = true;
-  public showFeed = false;
+  public showFeed: boolean;
   public errorMessage = '';
   public feedLayout: 'table' | 'cards';
   public page = 1;

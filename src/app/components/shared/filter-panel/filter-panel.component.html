@@ -6,10 +6,16 @@
                   [(ngModel)]="selectedInterventionType"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byInterventionType', $event, pickInterventions)">
-        <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of interventionTypes"
                     [value]="i.name">{{ i.name }}</mat-option>
       </mat-select>
+      <button *ngIf="selectedInterventionType"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('byInterventionType', 'interventionTypeSelect', $event)">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
 
     <mat-form-field appearance="fill"
@@ -42,6 +48,13 @@
                       [value]="i.id">{{ i.name }}</mat-option>
         </ng-container>
       </mat-select>
+      <button *ngIf="selectedInterventions?.length > 0"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('byIntervention', 'interventionsSelect', $event)">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -51,10 +64,16 @@
                   [(ngModel)]="selectedStrain"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byStrain', $event)">
-        <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of strain"
                     [value]="i.id">{{ i.name }}</mat-option>
       </mat-select>
+      <button *ngIf="selectedStrain?.length > 0"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('byStrain', 'strainSelect', $event)">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -63,10 +82,16 @@
                   [(ngModel)]="selectedYear"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byYear', $event)">
-        <mat-option [value]="">not set</mat-option>
         <mat-option *ngFor="let i of year"
                     [value]="i">{{ i }}</mat-option>
       </mat-select>
+      <button *ngIf="selectedYear"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('byYear', 'yearSelect', $event)">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
   </div>
 

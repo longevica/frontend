@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, QueryParamsHandling, Router } from '@angular/router';
 import {Observable, of } from 'rxjs';
 import { FilterQueryParams, FilterResponseModel, FilterStateModel } from '../models/filter-response.model';
 
@@ -65,13 +65,10 @@ export class FilterParametersService {
     return url;
   }
 
-  public applyQueryParams(param: string, value: any | any[]): void {
+  public applyQueryParams(param: string, value: any | any[], paramHandling: QueryParamsHandling = 'merge'): void {
+    console.log('applyQueryParams', value);
     if (this.appliedFiltersState.hasOwnProperty(param)) {
-      if (Array.isArray(value)) {
-        this.appliedFiltersState[param as keyof FilterResponseModel] = value.filter((p) => this.encode(p)).join(',');
-      } else {
-        this.appliedFiltersState[param as keyof FilterResponseModel] = this.encode(value);
-      }
+      this.appliedFiltersState[param as keyof FilterResponseModel] = this.encode(value);
     }
     const urlTree = this.router.parseUrl(this.router.url);
     let urlWithoutParams = '/';
@@ -86,7 +83,7 @@ export class FilterParametersService {
       [urlWithoutParams],
       {
         queryParams: { ...filterParams },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: paramHandling,
       });
   }
 }

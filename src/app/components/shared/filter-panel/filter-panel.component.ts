@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import {
@@ -18,7 +18,7 @@ type RangeValue = { [key: string]: number };
   templateUrl: './filter-panel.component.html',
   styleUrls: ['./filter-panel.component.scss'],
 })
-export class FilterPanelComponent implements OnInit, OnDestroy {
+export class FilterPanelComponent implements OnChanges, OnDestroy {
   public filtersForm: FormGroup;
   // FILTERS
   // Selects
@@ -140,7 +140,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.isAnyIntervention = of(!!this.interventions.length);
 
     // FILTERS
@@ -168,7 +168,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byStrain')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedStrain.push(this.filterParametersService.decode(res));
+        if (res && res.length > 0) {
+          this.selectedStrain = this.filterParametersService.decode(res).split(',');
+        }
       });
 
     this.year = this.getEntitiesList('byYear');
@@ -301,8 +303,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
   public compareSelectValues(value1: any | any[], value2: any): boolean {
     if (value1 && value2) {
-      console.log(value1, value2, value1 === value2);
-      return value1 === value2;
+      // comparison should not be strict
+      console.log(value1, value2, value1 == value2);
+      return value1 == value2;
     }
     return false;
   }
@@ -322,6 +325,31 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
   // TODO: not all controls are FormControls
   public resetForm(): void {
     this.filtersForm.reset();
+  }
+
+  /**
+   * Reset filter values
+   */
+
+  // tslint:disable-next-line:ban-types
+  reset(key: FilterQueryParams, controlToReset: any, $event: any, callback?: Function): void {
+    const value = '';
+    this.filterParametersService.applyQueryParams(key, value, '');
+    this.filtersForm.controls[controlToReset].reset();
+    this.filterApplied.emit({ name: key, value });
+    $event.stopPropagation();
+    if (callback) {
+      callback.call(this);
+    }
+  }
+
+  resetRange(key: FilterQueryParams, field: any, $event: any): void {
+    field.currentMin = Math.floor(0);
+    field.currentMax = Math.floor(0);
+    const value = [field.currentMin, field.currentMax];
+    this.filterParametersService.applyQueryParams(key, value, '');
+    this.filterApplied.emit({ name: key, value });
+    $event.stopPropagation();
   }
 
   /**

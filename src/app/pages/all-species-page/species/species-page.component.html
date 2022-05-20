@@ -28,7 +28,7 @@
           (checkedIds)="setPlotData($event)">
         </app-organism-table>
 
-        <div *ngIf="!showFeed"
+        <div *ngIf="showFeed === false"
              class="species__error">
           <ng-container *ngIf="errorMessage.length === 0; else errorTemplate">Nothing found</ng-container>
           <ng-template #errorTemplate>Error acquired: {{ errorMessage }}</ng-template>
