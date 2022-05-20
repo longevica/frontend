@@ -9,11 +9,11 @@
         <mat-option *ngFor="let i of interventionTypes"
                     [value]="i.name">{{ i.name }}</mat-option>
       </mat-select>
-      <button *ngIf="selectedInterventionType"
+      <button *ngIf="selectedInterventionType?.length > 0"
               matSuffix
               mat-icon-button
               aria-label="Clear"
-              (click)="reset('byInterventionType', 'interventionTypeSelect', $event)">
+              (click)="reset('byInterventionType', 'interventionTypeSelect', '', $event)">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -52,7 +52,7 @@
               matSuffix
               mat-icon-button
               aria-label="Clear"
-              (click)="reset('byIntervention', 'interventionsSelect', $event)">
+              (click)="reset('byIntervention', 'interventionsSelect', [], $event)">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -71,7 +71,7 @@
               matSuffix
               mat-icon-button
               aria-label="Clear"
-              (click)="reset('byStrain', 'strainSelect', $event)">
+              (click)="reset('byStrain', 'strainSelect', [], $event)">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -85,11 +85,11 @@
         <mat-option *ngFor="let i of year"
                     [value]="i">{{ i }}</mat-option>
       </mat-select>
-      <button *ngIf="selectedYear"
+      <button *ngIf="selectedYear?.length > 0"
               matSuffix
               mat-icon-button
               aria-label="Clear"
-              (click)="reset('byYear', 'yearSelect', $event)">
+              (click)="reset('byYear', 'yearSelect', '', $event)">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>

@@ -24,19 +24,19 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   // Selects
   // - Intervention types
   public selectedInterventionType = '';
-  public interventionTypes: any[] | any | null;
+  public interventionTypes: any[] = [];
   // - Intervention type - interventions (multiple)
   public selectedInterventions: any[] = [];
   public interventions: any[] = [];
   // - Species
-  public selectedSpecies: any;
-  public species: any[] | any | null;
+  public selectedSpecies: any[] = [];
+  public species: any[] = [];
   // Strain
   public selectedStrain: any[] = [];
-  public strain: any[] | null;
+  public strain: any[] = [];
   // Year
-  public selectedYear: any;
-  public year: any[] | null;
+  public selectedYear = '';
+  public year: any[] = [];
 
   // Sliders
   public slidersStep = 5;
@@ -149,7 +149,9 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byInterventionType')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedInterventionType = res;
+        if (typeof res !== undefined) {
+          this.selectedInterventionType = res;
+        }
       });
 
     // Interventions (multiple select)
@@ -160,7 +162,9 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('bySpecies')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedSpecies = res;
+        if (typeof res !== undefined) {
+          this.selectedSpecies = res;
+        }
       });
 
     // TODO: Remove species filter or use for backwards compatibility
@@ -168,7 +172,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byStrain')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res && res.length > 0) {
+        if (typeof res !== undefined) {
           this.selectedStrain = this.filterParametersService.decode(res).split(',');
         }
       });
@@ -177,7 +181,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byYear')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        this.selectedYear = Number(res);
+        this.selectedYear = res;
       });
 
     // Min lifespan change units (range slider)
@@ -188,7 +192,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMinLifespan')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.minLifespan.currentMin = res.split(',')[0];
           this.minLifespan.currentMax = res.split(',')[1];
         }
@@ -202,7 +206,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMedLifespan')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.medLifespan.currentMin = res.split(',')[0];
           this.medLifespan.currentMax = res.split(',')[1];
         }
@@ -216,7 +220,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byAvgLifespan')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.avgLifespan.currentMin = res.split(',')[0];
           this.avgLifespan.currentMax = res.split(',')[1];
         }
@@ -230,7 +234,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMaxLifespan')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.maxLifespan.currentMin = res.split(',')[0];
           this.maxLifespan.currentMax = res.split(',')[1];
         }
@@ -244,7 +248,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMinLifespanChangePercent')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.minLifespanChangePercent.currentMin = res.split(',')[0];
           this.minLifespanChangePercent.currentMax = res.split(',')[1];
         }
@@ -258,7 +262,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMedLifespanChangePercent')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.medLifespanChangePercent.currentMin = res.split(',')[0];
           this.medLifespanChangePercent.currentMax = res.split(',')[1];
         }
@@ -272,7 +276,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byAvgLifespanChangePercent')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.avgLifespanChangePercent.currentMin = res.split(',')[0];
           this.avgLifespanChangePercent.currentMax = res.split(',')[1];
         }
@@ -286,7 +290,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.retrieveQueryParamFromUrl('byMaxLifespanChangePercent')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
-        if (res) {
+        if (typeof res !== undefined) {
           this.maxLifespanChangePercent.currentMin = res.split(',')[0];
           this.maxLifespanChangePercent.currentMax = res.split(',')[1];
         }
@@ -304,6 +308,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   public compareSelectValues(value1: any | any[], value2: any): boolean {
     if (value1 && value2) {
       // comparison should not be strict
+      // tslint:disable-next-line:triple-equals
       return value1 == value2;
     }
     return false;
@@ -331,10 +336,12 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
    */
 
   // tslint:disable-next-line:ban-types
-  reset(key: FilterQueryParams, controlToReset: any, $event: any, callback?: Function): void {
+  reset(key: FilterQueryParams, controlToReset: any, resetValue: any, $event: any, callback?: Function): void {
     const value = '';
     this.filterParametersService.applyQueryParams(key, value, '');
-    this.filtersForm.controls[controlToReset].reset();
+    if (this.filtersForm.controls[controlToReset]) {
+      this.filtersForm.controls[controlToReset].reset(resetValue);
+    }
     this.filterApplied.emit({ name: key, value });
     $event.stopPropagation();
     if (callback) {
@@ -417,7 +424,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   }
 
   public interventionsSelectVaidation(): void {
-    if (!this.selectedInterventionType) {
+    if (this.selectedInterventionType?.length === 0) {
       this.snackBar.open(
         'Please select an intervention type first', '', {
           verticalPosition: 'top',

@@ -19,12 +19,12 @@ export class FilterParametersService {
     byAvgLifespan: [],
     byMaxLifespan: [],
     byIntervention: [],
-    byInterventionType: undefined,
+    byInterventionType: '',
     byMinLifespanChangePercent: [],
     byMedLifespanChangePercent: [],
     byAvgLifespanChangePercent: [],
     byMaxLifespanChangePercent: [],
-    bySpecies: undefined,
+    bySpecies: '',
     byStrain: [],
     byYear: []
   };
