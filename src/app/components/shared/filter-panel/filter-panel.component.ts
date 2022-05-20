@@ -304,7 +304,6 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   public compareSelectValues(value1: any | any[], value2: any): boolean {
     if (value1 && value2) {
       // comparison should not be strict
-      console.log(value1, value2, value1 == value2);
       return value1 == value2;
     }
     return false;

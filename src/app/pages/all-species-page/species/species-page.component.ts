@@ -93,7 +93,6 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
         takeUntil(this.unsubscribe$),
       ).subscribe((res) => {
       const params = res;
-      console.log(params);
       for (const key in params) {
         if (params.hasOwnProperty(key)) {
           if (params[key as FilterQueryParams]?.length === 0) {
@@ -105,7 +104,6 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
       }
 
       this.filterParams = params;
-      console.log('params: ', this.filterParams);
     });
 
     if (next) {
@@ -116,7 +114,6 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
   public getExperimentsData(): void {
     this.loaderVisible = true;
     const filterParams = this.filterParams ? this.filterParams : {};
-    console.log('filterParams, page ', filterParams, this.page);
     this.experimentApiService.getExperiments(filterParams, this.page)
       .pipe(
         takeUntil(this.unsubscribe$),

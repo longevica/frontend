@@ -66,7 +66,6 @@ export class FilterParametersService {
   }
 
   public applyQueryParams(param: string, value: any | any[], paramHandling: QueryParamsHandling = 'merge'): void {
-    console.log('applyQueryParams', value);
     if (this.appliedFiltersState.hasOwnProperty(param)) {
       this.appliedFiltersState[param as keyof FilterResponseModel] = this.encode(value);
     }
@@ -77,7 +76,6 @@ export class FilterParametersService {
     }
 
     const filterParams = this.removeEmptyFields(this.appliedFiltersState);
-    console.log('filterParams: ', filterParams);
 
     this.router.navigate(
       [urlWithoutParams],
