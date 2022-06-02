@@ -37,18 +37,8 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
     showlegend: true,
     legend: {},
     title: '',
-    xaxis: {
-      autorange: true,
-      ticks: 'inside',
-      zeroline: true,
-      linewidth: 1,
-    },
-    yaxis: {
-      autorange: true,
-      ticks: 'inside',
-      zeroline: true,
-      linewidth: 1,
-    },
+    xaxis: {},
+    yaxis: {},
   };
   public windowSizeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
   public defaultCheckedIds: number[];
