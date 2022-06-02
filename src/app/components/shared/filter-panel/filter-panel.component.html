@@ -1,52 +1,21 @@
 <form class="filters-panel" [formGroup]="filtersForm">
   <div class="filters-panel__select">
     <mat-form-field appearance="fill">
-      <mat-label>Intervention type</mat-label>
-      <mat-select formControlName="interventionTypeSelect"
-                  [(ngModel)]="selectedInterventionType"
-                  [compareWith]="compareSelectValues"
-                  (selectionChange)="apply('byInterventionType', $event, pickInterventions)">
-        <mat-option *ngFor="let i of interventionTypes"
-                    [value]="i.name">{{ i.name }}</mat-option>
-      </mat-select>
-      <button *ngIf="selectedInterventionType?.length > 0"
-              matSuffix
-              mat-icon-button
-              aria-label="Clear"
-              (click)="reset('byInterventionType', 'interventionTypeSelect', '', $event)">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill"
-                    (mousedown)="pickInterventions()">
-      <mat-label [ngSwitch]="selectedInterventionType">
-        <ng-container *ngSwitchCase="'drug'">
-          <ng-container *ngIf="interventions?.length !== 0; else noInterventions">
-            Select drugs
-          </ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'diet'">
-          <ng-container *ngIf="interventions?.length !== 0; else noInterventions">
-            Select diets
-          </ng-container>
-        </ng-container>
-        <ng-container *ngSwitchDefault>
-          Interventions
-        </ng-container>
-        <ng-template #noInterventions>No interventions</ng-template>
-      </mat-label>
+      <mat-label>Interventions</mat-label>
       <mat-select formControlName="interventionsSelect"
                   multiple
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byIntervention', $event)"
-                  (click)="interventionsSelectVaidation()"
       >
-        <ng-container *ngIf="isAnyIntervention | async">
-          <mat-option *ngFor="let i of interventions"
+        <mat-optgroup label="Calorie restriction diets">
+          <mat-option *ngFor="let i of dietInterventions"
                       [value]="i.id">{{ i.name }}</mat-option>
-        </ng-container>
+        </mat-optgroup>
+        <mat-optgroup label="Drug interventions">
+          <mat-option *ngFor="let i of drugInterventions"
+                      [value]="i.id">{{ i.name }}</mat-option>
+        </mat-optgroup>
       </mat-select>
       <button *ngIf="selectedInterventions?.length > 0"
               matSuffix

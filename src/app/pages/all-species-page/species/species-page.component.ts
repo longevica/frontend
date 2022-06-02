@@ -39,15 +39,15 @@ export class SpeciesPageComponent extends WindowWidth implements OnInit, OnDestr
     title: '',
     xaxis: {
       autorange: true,
-      ticks: 'outside',
-      zeroline: false,
-      linewidth: 2,
+      ticks: 'inside',
+      zeroline: true,
+      linewidth: 1,
     },
     yaxis: {
       autorange: true,
-      ticks: 'outside',
-      zeroline: false,
-      linewidth: 2,
+      ticks: 'inside',
+      zeroline: true,
+      linewidth: 1,
     },
   };
   public windowSizeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();

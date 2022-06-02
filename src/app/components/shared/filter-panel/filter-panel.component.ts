@@ -5,8 +5,8 @@ import {
   FilterQueryParams,
   FilterParamsToResponse,
 } from '../../../core/models/filter-response.model';
-import { Filters, Intervention } from '../../../core/models/api/filters.model';
-import { Observable, of, Subject } from 'rxjs';
+import { Filters } from '../../../core/models/api/filters.model';
+import { Subject } from 'rxjs';
 import { FilterParametersService } from '../../../core/services/filter-parameters.service';
 import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,12 +22,10 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   public filtersForm: FormGroup;
   // FILTERS
   // Selects
-  // - Intervention types
-  public selectedInterventionType = '';
-  public interventionTypes: any[] = [];
-  // - Intervention type - interventions (multiple)
+  // - Interventions (multiple)
   public selectedInterventions: any[] = [];
-  public interventions: any[] = [];
+  public dietInterventions: any[] = [];
+  public drugInterventions: any[] = [];
   // - Species
   public selectedSpecies: any[] = [];
   public species: any[] = [];
@@ -98,8 +96,6 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     currentMax: 0,
   };
 
-  public isAnyIntervention = new Observable<any>();
-
   private subscription$ = new Subject();
   private filters: Filters;
 
@@ -141,21 +137,17 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.isAnyIntervention = of(!!this.interventions.length);
-
     // FILTERS
-    // Intervention types (select)
-    this.interventionTypes = this.getEntitiesList('byInterventionType');
-    this.filterParametersService.retrieveQueryParamFromUrl('byInterventionType')
+    // Interventions (multiple select)
+    this.dietInterventions = this.getEntitiesList('byIntervention').filter((i: any) => i.type === 'diet');
+    this.drugInterventions = this.getEntitiesList('byIntervention').filter((i: any) => i.type === 'drug');
+    this.filterParametersService.retrieveQueryParamFromUrl('byIntervention')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
         if (typeof res !== undefined) {
-          this.selectedInterventionType = res;
+          this.selectedInterventions = res;
         }
       });
-
-    // Interventions (multiple select)
-    this.pickInterventions();
 
     // Species (select)
     this.species = this.getEntitiesList('bySpecies');
@@ -389,49 +381,5 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.applyQueryParams(key, value);
     this.filterApplied.emit({ name: key, value });
     this.cdRef.detectChanges();
-  }
-
-  public pickInterventions(): void {
-    this.interventions = this.filters.intervention;
-
-    // Show a list of interventions filtered by a 'type' field
-    if (this.selectedInterventionType?.length !== 0) {
-      try {
-        this.interventions = this.filters.intervention
-          .filter((intervention: Intervention) => {
-            return intervention.id !== null && intervention.type === this.selectedInterventionType ;
-          });
-      } catch {
-        return;
-      }
-    }
-
-    this.isAnyIntervention = of(!!this.interventions.length);
-
-    this.filterParametersService
-      .retrieveQueryParamFromUrl('byIntervention')
-      .pipe(takeUntil(this.subscription$))
-      .subscribe((res) => {
-        if (res && res?.length > 0) {
-          const indexes = res.split(',').map((i: string) => Number(i));
-          const matchingInterventions = this.interventions.filter((item: any) => indexes.includes(item.id));
-          this.selectedInterventions = matchingInterventions.map((item: any) => item.id);
-        }
-      });
-
-    this.cdRef.detectChanges();
-  }
-
-  public interventionsSelectVaidation(): void {
-    if (this.selectedInterventionType?.length === 0) {
-      this.snackBar.open(
-        'Please select an intervention type first', '', {
-          verticalPosition: 'top',
-          duration: 700,
-        }
-      );
-    }
-
-    return;
   }
 }
