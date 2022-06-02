@@ -96,40 +96,6 @@
   </div>
 
   <!-- Range filters (units) -->
-
-  <div *ngIf="minLifespan.max !== 0"
-       class="filters-panel__slider">
-    <label>Min lifespan</label>
-    <div class="slider__range-wrapper">
-      <app-slider
-        [minValue]="minLifespan.min"
-        [maxValue]="minLifespan.max"
-        [sliderStep]="slidersStep"
-        [minCurrentValue]="minLifespan.currentMin"
-        [maxCurrentValue]="minLifespan.currentMax"
-        (minCurrentValueChange)="applyRange('byMinLifespan', minLifespan, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('byMinLifespan', minLifespan, 'max', $event)"
-      ></app-slider>
-    </div>
-    <div class="slider__fields-row">
-      <input
-        matInput
-        type="text"
-        formControlName="minLifespanMinInput"
-        class="field"
-        readonly
-        [(ngModel)]="minLifespan.currentMin">
-
-      <input
-        matInput
-        type="text"
-        formControlName="minLifespanMaxInput"
-        class="field"
-        readonly
-        [(ngModel)]="minLifespan.currentMax">
-    </div>
-  </div>
-
   <div *ngIf="medLifespan.max !== 0"
        class="filters-panel__slider">
     <label>Median lifespan</label>
@@ -230,40 +196,6 @@
   </div>
 
   <!-- Range filters (%) -->
-
-  <div *ngIf="minLifespanChangePercent.max !== 0"
-       class="filters-panel__slider">
-    <label>Min lifespan change %</label>
-    <div class="slider__range-wrapper">
-      <app-slider
-        [minValue]="minLifespanChangePercent.min"
-        [maxValue]="minLifespanChangePercent.max"
-        [sliderStep]="slidersStep"
-        [minCurrentValue]="minLifespanChangePercent.currentMin"
-        [maxCurrentValue]="minLifespanChangePercent.currentMax"
-        (minCurrentValueChange)="applyRange('byMinLifespanChangePercent', minLifespanChangePercent, 'min', $event)"
-        (maxCurrentValueChange)="applyRange('byMinLifespanChangePercent', minLifespanChangePercent, 'max', $event)"
-      ></app-slider>
-    </div>
-    <div class="slider__fields-row">
-      <input
-        matInput
-        type="text"
-        formControlName="minLifespanChangePercentMinInput"
-        class="field"
-        readonly
-        [(ngModel)]="minLifespanChangePercent.currentMin">
-
-      <input
-        matInput
-        type="text"
-        formControlName="minLifespanChangePercentMaxInput"
-        class="field"
-        readonly
-        [(ngModel)]="minLifespanChangePercent.currentMax">
-    </div>
-  </div>
-
   <div *ngIf="medLifespanChangePercent.max !== 0"
        class="filters-panel__slider">
     <label>Median lifespan change %</label>
