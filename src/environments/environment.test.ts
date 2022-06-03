@@ -1,7 +1,7 @@
 export const environment = {
   name: 'test',
   production: false,
-  apiUrl: 'https://d4kppyp4im.us-east-2.awsapprunner.com/',
+  apiUrl: 'https://vxte6v6mf9.us-east-2.awsapprunner.com/',
   apiMocks: {
     experimentsList: '../assets/mocks/experiments-list-mock.json',
     speciesList: '../assets/mocks/species-list-mock.json',

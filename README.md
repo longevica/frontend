@@ -23,11 +23,8 @@ npm run start
 ---
 ## Build for different environments
 
-Developers stand test build: `npm run build-dev`
-
-Demo stand build: `npm run build-demo`
-
-Production AOT build: `npm run build-prod`
+- Developers stand test build: `npm run build-test`
+- Production AOT build: `npm run build-prod`
 
 ## Setup configs
 ### IDEA
