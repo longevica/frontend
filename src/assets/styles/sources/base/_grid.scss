@@ -1,0 +1,48 @@
+/* Grid mixins */
+@import "grid/variables";
+@import "grid/breakpoints";
+
+.grid-container {
+  box-sizing: border-box;
+  display: grid;
+  grid-gap: $gutter;
+  height: 100%;
+  width: calc(100% - #{$gutter * 2});
+  min-width: $smartphone - ($gutter * 2);
+  max-width: 1252px;
+  margin-right: auto;
+  margin-left: auto;
+
+  .grid-container__sidebar {
+    position: relative;
+    grid-area: sidebar;
+  }
+
+  .grid-container__content {
+    grid-area: content;
+  }
+
+  @include resolution_desktop-and-up {
+    grid-template-columns: $sidebar-width auto;
+    grid-template-areas: "sidebar content";
+
+    .grid-container__content {
+      &--full-width {
+        grid-column-start: 1;
+      }
+    }
+  }
+
+  @include resolution_smartphone-and-tablet {
+    grid-template-columns: 100%;
+    grid-template-areas:
+    "sidebar"
+    "content";
+
+    .grid-container__content {
+      &--full-width {
+        grid-row-start: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import '../../../../../../assets/styles/dependencies';
+
+// Colors
+$slider-line-color: $color-gray-600;
+$slider-line-bar-color: $color-primary-600;
+$slider-button-color: $color-primary-600;
+$slider-button-hover-color: $color-primary-600;
+$slider-button-pressed-color: $color-primary-600;
+
+// Sizes
+$slider-line-height: 2px;
+$slider-line-bar-height: 2px;
+$slider-button-visible-size: 13px;
+$slider-button-ripple-size: 32px;

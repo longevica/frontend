@@ -1,0 +1,49 @@
+@import '../../../../assets/styles/dependencies';
+
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: z(header);
+}
+
+.header { // mat-toolbar
+  padding: 0 $gutter;
+  &, &__content {
+    width: 100%;
+    position: relative;
+  }
+
+  &__content {
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    color: $color-white;
+
+    .menu {
+      width: 60%;
+      font-size: $font-size + 1;
+      text-align: right;
+
+      &__item {
+        display: inline-block;
+        vertical-align: middle;
+        font-weight: $font-weight-regular;
+      }
+
+      .menu__item + .menu__item {
+        margin-left: calc(1.5em + 1vw);
+      }
+    }
+  }
+}
+
+.logo {
+  display: inline-block;
+  height: 50px;
+  width: 90px;
+  background: url('#{$path-images}/logo.svg') center / contain no-repeat;
+}

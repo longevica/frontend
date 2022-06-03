@@ -1,0 +1,48 @@
+@mixin hint() {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: $padding-l;
+  background: $color-primary-50;
+  border-radius: $border-radius-s;
+  font-size: 12px;
+
+  &__content {
+    flex: 1 1;
+    min-width: 80%;
+    padding-right: $padding-l;
+    margin-bottom: $padding-s;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    width: auto;
+    height: 26px;
+    padding: 0;
+    transition: color .15s linear;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: $font-weight-medium;
+    line-height: 1;
+
+    &:link,
+    &:visited {
+      color: $color-primary-500;
+    }
+
+    &:hover {
+      color: $color-primary-600;
+    }
+
+    &:active {
+      color: $color-primary-700;
+    }
+  }
+}

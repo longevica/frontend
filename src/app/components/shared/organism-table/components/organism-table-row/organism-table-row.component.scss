@@ -1,0 +1,12 @@
+@import "../../../../../../assets/styles/dependencies";
+
+:host {
+  display: contents;
+}
+
+@include table-cell;
+
+.link {
+  @include link;
+}
+
