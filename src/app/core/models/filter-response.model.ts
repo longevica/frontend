@@ -1,3 +1,5 @@
+import { Item } from './api/basic-types.model';
+
 export interface FilterResponseModel {
   interventionType: any;
   intervention: any[];
@@ -12,6 +14,8 @@ export interface FilterResponseModel {
   avgLifespan: any;
   maxLifespan: any;
   year: number[];
+  bySex?: Item[];
+  byDoi: string;
 }
 
 export interface FilterStateModel {
@@ -28,6 +32,8 @@ export interface FilterStateModel {
   byAvgLifespan: any;
   byMaxLifespan: any;
   byYear: number[];
+  bySex?: number;
+  byDoi: string;
 }
 
 
@@ -44,7 +50,9 @@ export type FilterQueryParams =
   | 'byMedLifespan'
   | 'byAvgLifespan'
   | 'byMaxLifespan'
-  | 'byYear';
+  | 'byYear'
+  | 'bySex'
+  | 'byDoi';
 
 // [FilterQueryParams as key]: [FilterResponseModel as key]
 export enum FilterParamsToResponse {
@@ -60,5 +68,7 @@ export enum FilterParamsToResponse {
   byMedLifespan = 'medLifespan',
   byAvgLifespan = 'avgLifespan',
   byMaxLifespan = 'maxLifespan',
-  byYear = 'year'
+  byYear = 'year',
+  bySex = 'sex',
+  byDoi = 'doi'
 }

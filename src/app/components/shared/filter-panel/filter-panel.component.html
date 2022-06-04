@@ -46,6 +46,26 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
+      <mat-label>Sex</mat-label>
+      <mat-select formControlName="interventionsSelect"
+                  [disabled]="sex.length === 0"
+                  [(ngModel)]="selectedInterventions"
+                  [compareWith]="compareSelectValues"
+                  (selectionChange)="apply('bySex', $event)"
+      >
+        <mat-option *ngFor="let i of sex"
+                    [value]="i.id">{{ i.name }}</mat-option>
+      </mat-select>
+      <button *ngIf="selectedSex?.length > 0"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('bySex', 'sexSelect', [], $event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
       <mat-label>Year</mat-label>
       <mat-select formControlName="yearSelect"
                   [(ngModel)]="selectedYear"
@@ -262,5 +282,24 @@
         readonly
         [(ngModel)]="maxLifespanChangePercent.currentMax">
     </div>
+
+    <mat-form-field
+      appearance="fill"
+      class="filters-panel__input __mt-15"
+    >
+      <mat-label>DOI</mat-label>
+      <input formControlName="doiInput"
+             matInput
+             [disabled]="true"
+             [(ngModel)]="selectedInterventions"
+             (input)="applyInut('byDoi', $event)">
+      <button *ngIf="selectedInterventions?.length > 0"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="reset('byDoi', 'doiInput', [], $event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 </form>

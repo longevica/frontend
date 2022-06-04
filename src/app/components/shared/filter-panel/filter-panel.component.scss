@@ -52,6 +52,12 @@
       }
     }
   }
+
+  &__input {
+    &, input {
+      width: 100%;
+    }
+  }
 }
 
 ::ng-deep {

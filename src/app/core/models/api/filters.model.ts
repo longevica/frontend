@@ -19,4 +19,6 @@ export interface Filters {
   avgLifespan: FilterRange;
   maxLifespan: FilterRange;
   year: number[];
+  sex?: Item[];
+  doi: any;
 }

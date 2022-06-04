@@ -35,6 +35,9 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   // Year
   public selectedYear = '';
   public year: any[] = [];
+  // Sex
+  public selectedSex = '';
+  public sex: any[] = [];
 
   // Sliders
   public slidersStep = 5;
@@ -133,6 +136,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
       avgLifespanChangePercentMaxInput: new FormControl(0, null),
       maxLifespanChangePercentMinInput: new FormControl(0, null),
       maxLifespanChangePercentMaxInput: new FormControl(0, null),
+      sexInput: new FormControl(0, null),
     });
   }
 
@@ -354,8 +358,7 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
    * Apply filter values
    */
 
-  // tslint:disable-next-line:ban-types
-  apply(key: FilterQueryParams, $event: MatSelectChange, callback?: Function): void {
+  apply(key: FilterQueryParams, $event: MatSelectChange, callback?: () => any): void {
     let value = $event.value;
     if (Array.isArray($event.value)) {
       value = $event.value.join(',');
@@ -381,5 +384,10 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     this.filterParametersService.applyQueryParams(key, value);
     this.filterApplied.emit({ name: key, value });
     this.cdRef.detectChanges();
+  }
+
+  applyInut(key: FilterQueryParams, $event: any): void {
+    this.filterParametersService.applyQueryParams(key, $event.value);
+    this.filterApplied.emit({ name: key, value: $event.value });
   }
 }
