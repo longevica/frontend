@@ -1,4 +1,6 @@
-<form class="filters-panel" [formGroup]="filtersForm">
+<form class="filters-panel"
+      [formGroup]="filtersForm"
+      autocomplete="off">
   <div class="filters-panel__select">
     <mat-form-field appearance="fill">
       <mat-label>Interventions</mat-label>
@@ -7,14 +9,53 @@
                   [(ngModel)]="selectedInterventions"
                   [compareWith]="compareSelectValues"
                   (selectionChange)="apply('byIntervention', $event)"
+                  (openedChange)="filterInterventionsReset()"
       >
-        <mat-optgroup label="Calorie restriction diets">
-          <mat-option *ngFor="let i of dietInterventions"
-                      [value]="i.id">{{ i.name }}</mat-option>
+        <div class="search-bar">
+          <mat-form-field appearance="standard"
+                          class="search-bar__input">
+            <input
+              matInput
+              type="text"
+              formControlName="interventionsSearchInput"
+              [(ngModel)]="interventionsSearchValue"
+              [placeholder]="'search' | translate"
+              (keydown)="filterInterventions($event)"
+            >
+            <button *ngIf="interventionsSearchValue.length !== 0"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                    (click)="interventionsSearchValue=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <ng-container *ngIf="dietInterventions.length !== 0">
+          <mat-optgroup label="Calorie restriction diets">
+            <mat-option *ngFor="let i of dietInterventions"
+                        [value]="i.id">
+            <span appHighlight
+                  [highlightText]="interventionsSearchValue"
+                  [innerHTML]="i?.name"></span>
+            </mat-option>
+          </mat-optgroup>
+        </ng-container>
+        <mat-optgroup *ngIf="dietInterventions.length === 0">
+          No diet interventions
         </mat-optgroup>
-        <mat-optgroup label="Drug interventions">
-          <mat-option *ngFor="let i of drugInterventions"
-                      [value]="i.id">{{ i.name }}</mat-option>
+
+        <ng-container *ngIf="drugInterventions.length !== 0">
+          <mat-optgroup label="Drug interventions">
+            <mat-option *ngFor="let i of drugInterventions">
+          <span appHighlight
+                [highlightText]="interventionsSearchValue"
+                [innerHTML]="i?.name"></span>
+            </mat-option>
+          </mat-optgroup>
+        </ng-container>
+        <mat-optgroup *ngIf="drugInterventions.length === 0">
+          No drug interventions
         </mat-optgroup>
       </mat-select>
       <button *ngIf="selectedInterventions?.length > 0"

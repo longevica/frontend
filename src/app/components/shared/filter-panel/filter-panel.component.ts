@@ -24,8 +24,11 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   // Selects
   // - Interventions (multiple)
   public selectedInterventions: any[] = [];
+  public interventionsSearchValue = '';
   public dietInterventions: any[] = [];
   public drugInterventions: any[] = [];
+  private cachedDietInterventions: any[] = [];
+  private cachedDrugInterventions: any[] = [];
   // - Species
   public selectedSpecies: any[] = [];
   public species: any[] = [];
@@ -137,6 +140,8 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
       maxLifespanChangePercentMinInput: new FormControl(0, null),
       maxLifespanChangePercentMaxInput: new FormControl(0, null),
       sexInput: new FormControl(0, null),
+      doiInput: new FormControl('', null),
+      interventionsSearchInput: new FormControl('', null),
     });
   }
 
@@ -145,6 +150,8 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
     // Interventions (multiple select)
     this.dietInterventions = this.getEntitiesList('byIntervention').filter((i: any) => i.type === 'diet');
     this.drugInterventions = this.getEntitiesList('byIntervention').filter((i: any) => i.type === 'drug');
+    this.cachedDietInterventions = [...this.dietInterventions];
+    this.cachedDrugInterventions = [...this.drugInterventions];
     this.filterParametersService.retrieveQueryParamFromUrl('byIntervention')
       .pipe(takeUntil(this.subscription$))
       .subscribe((res) => {
@@ -389,5 +396,21 @@ export class FilterPanelComponent implements OnChanges, OnDestroy {
   applyInut(key: FilterQueryParams, $event: any): void {
     this.filterParametersService.applyQueryParams(key, $event.value);
     this.filterApplied.emit({ name: key, value: $event.value });
+  }
+
+  public filterInterventions($event: KeyboardEvent): void {
+    const searchText = ($event.target as HTMLInputElement).value.toLowerCase();
+    this.interventionsSearchValue = searchText;
+    if (searchText.length > 1) {
+      this.dietInterventions = [...this.dietInterventions].filter((i) => i.name?.toLowerCase().includes(searchText));
+      this.drugInterventions = [...this.drugInterventions].filter((i) => i.name?.toLowerCase().includes(searchText));
+    }
+    $event.stopPropagation();
+  }
+
+  public filterInterventionsReset(): void {
+    this.interventionsSearchValue = '';
+    this.dietInterventions = [...this.cachedDietInterventions];
+    this.drugInterventions = [...this.cachedDrugInterventions];
   }
 }

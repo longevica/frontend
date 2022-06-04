@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../modules/vendors/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppSliderModule } from '../../ui-components/components/slider/app-slider.module';
+import { DirectivesModule } from '../../../directives/directives.module';
 
 @NgModule({
   declarations: [FilterPanelComponent],
@@ -18,6 +19,7 @@ import { AppSliderModule } from '../../ui-components/components/slider/app-slide
     TranslateModule,
     AppSliderModule,
     FormsModule,
+    DirectivesModule,
   ],
 })
 export class FilterPanelModule { }
